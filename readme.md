@@ -1,0 +1,1 @@
+This repository contains experiments on [OpenAPI](https://www.openapis.org/) V3 Spec.
