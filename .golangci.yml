@@ -81,3 +81,16 @@ linters:
     - contextcheck
     - nonamedreturns
     - wastedassign
+issues:
+  exclude-use-default: false
+  max-per-linter: 0
+  max-same-issues: 0
+  exclude-rules:
+    - path: openapiv3/parameter.go
+      text: "cyclomatic complexity 16 of func `\\(Parameter\\).Validate` is high \\(> 15\\)"
+      linters:
+        - gocyclo
+    - path: openapiv3/path_item.go
+      text: "cyclomatic complexity \\d+ of func `\\(\\*PathItem\\).Validate` is high \\(> 15\\)"
+      linters:
+        - gocyclo
