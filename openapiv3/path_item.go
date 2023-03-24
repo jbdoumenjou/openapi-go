@@ -73,7 +73,7 @@ type PathItem struct {
 	// A definition of a GET operation on this path.
 	Get *Operation `json:"get,omitempty"`
 	// A definition of a PUT operation on this path.
-	Put *Operation `json:"pu,omitempty"`
+	Put *Operation `json:"put,omitempty"`
 	// A definition of a POST operation on this path.
 	Post *Operation `json:"post,omitempty"`
 	// A definition of a DELETE operation on this path.

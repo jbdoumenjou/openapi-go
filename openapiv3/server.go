@@ -40,7 +40,7 @@ type Server struct {
 	URL string `json:"url"`
 	// An optional string describing the host designated by the URL.
 	// CommonMark syntax (https://spec.commonmark.org/) MAY be used for rich text representation.
-	Description string `json:"description,omitempty"`
+	Description string `json:"description,omitempty" `
 	// A map between a variable name and its value. The value is used for substitution in the server’s URL template.
 	Variables map[string]ServerVariable `json:"variables,omitempty"`
 }
