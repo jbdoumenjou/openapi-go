@@ -1,6 +1,8 @@
 package openapiv3
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Schema allows the definition of input and output data types ([ref]).
 // These types can be objects, but also primitives and arrays.
@@ -21,6 +23,8 @@ import "fmt"
 // [JSON Schema Validation]: https://tools.ietf.org/html/draft-bhutton-json-schema-validation-00
 // [Specification Extensions]: https://spec.openapis.org/oas/latest.html#specificationExtensions
 type Schema struct {
+	JSONSchema
+
 	// Adds support for polymorphism.
 	// The discriminator is an object name that is used to differentiate between other schemas which may satisfy the payload description.
 	// See Composition and Inheritance (https://spec.openapis.org/oas/latest.html#schemaComposition) for more details.

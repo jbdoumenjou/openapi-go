@@ -22,15 +22,7 @@ import "errors"
 // [ref]: https://spec.openapis.org/oas/latest.html#header-object
 // [Specification Extensions]: https://spec.openapis.org/oas/latest.html#specificationExtensions
 type Header struct {
-	Reference
-
-	// REQUIRED. The name of the tag.
-	Name string `json:"name"`
-	// A description for the tag.
-	// CommonMark syntax (https://spec.commonmark.org/) MAY be used for rich text representation.
-	Description string `json:"description"`
-	// Additional external documentation for this tag.
-	ExternalDocs ExternalDocumentation `json:"externalDocs"`
+	Parameter
 }
 
 // Validate validates a Header.

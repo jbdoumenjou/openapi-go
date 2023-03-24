@@ -4,8 +4,13 @@
 package openapiv3
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
+
+	"sigs.k8s.io/yaml"
 )
 
 // OpenAPI is the root object of the OpenAPI document ([ref]),
@@ -60,6 +65,34 @@ type OpenAPI struct {
 	Tags []Tag `json:"tags,omitempty"`
 	// Additional external documentation.
 	ExternalDocs *ExternalDocumentation `json:"externalDocs,omitempty"`
+}
+
+// FromFile loads an OpenAPI from a file.
+func FromFile(path string) (*OpenAPI, error) {
+	content, err := os.ReadFile(filepath.Clean(path))
+	if err != nil {
+		return nil, fmt.Errorf("open file: %w", err)
+	}
+
+	switch filepath.Ext(path) {
+	case ".json", ".yaml", ".yml":
+	default:
+		return nil, fmt.Errorf("unknown file extension %q", filepath.Ext(path))
+	}
+
+	var oas *OpenAPI
+	if filepath.Ext(path) == ".yaml" || filepath.Ext(path) == ".yml" {
+		content, err = yaml.YAMLToJSON(content)
+		if err != nil {
+			return nil, fmt.Errorf("yaml to json: %w", err)
+		}
+	}
+
+	if err = json.Unmarshal(content, &oas); err != nil {
+		return nil, fmt.Errorf("marshal spec: %w", err)
+	}
+
+	return oas, nil
 }
 
 // Validate validates an OpenAPI.
