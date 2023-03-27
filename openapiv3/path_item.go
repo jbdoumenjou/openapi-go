@@ -1,6 +1,9 @@
 package openapiv3
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
 // PathItem describes the operations available on a single path ([ref]).
 // A Path Item MAY be empty, due to [ACL constraints].
@@ -140,4 +143,14 @@ func (pi *PathItem) Validate() error {
 	}
 
 	return nil
+}
+
+// GetOperation returns the operation matching the http method from the PathItem.
+func (pi *PathItem) GetOperation(method string) (*Operation, error) {
+	switch method {
+	case http.MethodGet:
+		return pi.Get, nil
+	default:
+		return nil, fmt.Errorf("unsupported method %q", method)
+	}
 }
