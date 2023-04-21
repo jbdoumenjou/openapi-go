@@ -82,6 +82,7 @@ func FromFile(path string) (*OpenAPI, error) {
 
 	var oas *OpenAPI
 	if filepath.Ext(path) == ".yaml" || filepath.Ext(path) == ".yml" {
+		// TODO: use the default parser.
 		content, err = yaml.YAMLToJSON(content)
 		if err != nil {
 			return nil, fmt.Errorf("yaml to json: %w", err)

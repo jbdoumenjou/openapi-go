@@ -150,7 +150,9 @@ func (pi *PathItem) GetOperation(method string) (*Operation, error) {
 	switch method {
 	case http.MethodGet:
 		return pi.Get, nil
+	case http.MethodPost:
+		return pi.Post, nil
 	default:
-		return nil, fmt.Errorf("unsupported method %q", method)
+		return nil, fmt.Errorf("undefined method %q", method)
 	}
 }

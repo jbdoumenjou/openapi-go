@@ -21,9 +21,7 @@ func FromFile(path string) (*Validator, error) {
 		return nil, fmt.Errorf("openAPI from file: %w", err)
 	}
 
-	checker := &Validator{OAS: oas}
-
-	return checker, nil
+	return &Validator{OAS: oas}, nil
 }
 
 // Validate validates a request against the OpenApi Specifications.
@@ -33,7 +31,9 @@ func (v *Validator) Validate(t *testing.T, handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		t.Run("validate request against OpenAPI Specification", func(t *testing.T) {
 			if err := v.validateRequest(request); err != nil {
-				t.Errorf("OAS validation failed: Request invalid: %s", err.Error())
+				msg := fmt.Sprintf("%s %s%s", request.Method, request.Host, request.RequestURI)
+				t.Errorf("OAS validation failed: Request %q invalid: %s", msg, err.Error())
+
 			}
 		})
 
@@ -44,6 +44,8 @@ func (v *Validator) Validate(t *testing.T, handler http.Handler) http.Handler {
 
 func (v *Validator) validateRequest(request *http.Request) error {
 	// TODO: validate server
+
+	// Path
 	requestPath := request.URL.Path
 	pathItem, err := v.OAS.Paths.Get(requestPath)
 	if err != nil {
@@ -53,11 +55,11 @@ func (v *Validator) validateRequest(request *http.Request) error {
 	method := request.Method
 	operation, err := pathItem.GetOperation(method)
 	if err != nil {
-		return fmt.Errorf("get operation for path %q: %w", requestPath, err)
+		return fmt.Errorf("operation for path %q: %w", requestPath, err)
 	}
 
 	if operation == nil {
-		return fmt.Errorf("unsupported method %q for path %q", http.MethodGet, requestPath)
+		return fmt.Errorf("unsupported method %q for path %q", method, requestPath)
 	}
 
 	// for _, parameter := range operation.Parameters {
